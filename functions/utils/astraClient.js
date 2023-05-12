@@ -27,15 +27,31 @@ const getCollection = async () => {
 
 const getNativeClient = async () => {
   if (client == null) {
-    client = new Client({
-      cloud: {
-      secureConnectBundle: "/Users/mukundha/Downloads/secure-connect-demo2.zip",
-      },
-      credentials: {
-      username: "mLaLiYZeQYyUPfesRvpUEBBd",
-      password: "3jT5lU2Ooq..MjWSisujW0QFE4q69To7bZf467YrgrcCiY2WwxymAnOt8m6xBNoTwyDiPLH0x,WzntNrLTsetY_Qfo0tlX+Thfx,vF6vimzgz4fbAKARoFuHJmCoOv.n",
-      },
-    })
+    if (process.env.DB_CHOICE == 'SCYLLA')
+    {
+      client = new Client({      
+        contactPoints:[process.env.SCYLLA_IP],
+        localDataCenter: process.env.SCYLLA_DC,
+        credentials: {
+          username: process.env.SCYLLA_USERNAME,
+          password: process.env.SCYLLA_PASSWORD,
+        },
+        keyspace: process.env.SCYLLA_KEYSPACE
+      })
+    } 
+    else if ( process.env.DB_CHOICE == 'ASTRA')
+    {
+      client = new Client({
+        cloud: {
+          secureConnectBundle: process.env.ASTRA_SECURE_BUNDLE,        
+        },
+        credentials: {
+          username: process.env.ASTRA_USERNAME,
+          password: process.env.ASTRA_PASSWORD,
+        },
+        keyspace: process.env.ASTRA_DB_KEYSPACE
+      });
+    }
     await client.connect();
   } 
   return client;  

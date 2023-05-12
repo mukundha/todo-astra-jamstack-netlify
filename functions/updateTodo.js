@@ -7,7 +7,7 @@ exports.handler = async (event, context) => {
   try {
     client = await getNativeClient();
     const body = JSON.parse(event.body);
-    const q = `INSERT INTO sag_todo_jamstack.todo (id,content, completed) VALUES ('${body.id}', '${body.text}', '${body.completed}');`
+    const q = `INSERT INTO todo (id,content, completed) VALUES ('${body.id}', '${body.text}', '${body.completed}');`
     console.log(q)
     const rs = await client.execute(q);
     console.log(JSON.stringify( {id:body.id, content: body.text, completed: true}));

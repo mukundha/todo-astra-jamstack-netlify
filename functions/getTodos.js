@@ -4,7 +4,7 @@ exports.handler = async (event, context) => {
   try{
     const client = await getNativeClient();
     
-    const rs = await client.execute("SELECT * FROM sag_todo_jamstack.todo");
+    const rs = await client.execute("SELECT * FROM todo");
     console.log(rs);
     t = []; 
     for ( row in rs.rows){

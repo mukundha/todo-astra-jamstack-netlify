@@ -5,7 +5,7 @@ exports.handler = async (event, context) => {
   try {
     client = await getNativeClient();
     const body = JSON.parse(event.body);
-    const q = `DELETE FROM sag_todo_jamstack.todo where id='${body.id}';`
+    const q = `DELETE FROM todo where id='${body.id}';`
     console.log(q)
     const rs = await client.execute(q);
     console.log(JSON.stringify( {id:body.id, content: body.text, completed: true}));
