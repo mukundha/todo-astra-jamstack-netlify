@@ -1,15 +1,20 @@
-const { getCollection } = require("./utils/astraClient");
+const { getNativeClient } = require("./utils/astraClient");
 
 exports.handler = async (event, context) => {
   const body = JSON.parse(event.body);
-  const todos = await getCollection();
   try {
-    const res = await todos.delete(body.id);
+    client = await getNativeClient();
+    const body = JSON.parse(event.body);
+    const q = `DELETE FROM sag_todo_jamstack.todo where id='${body.id}';`
+    console.log(q)
+    const rs = await client.execute(q);
+    console.log(JSON.stringify( {id:body.id, content: body.text, completed: true}));
     return {
       statusCode: 200,
-      body: JSON.stringify(res),
+      body: JSON.stringify( {id:body.id, content: body.text, completed: true}),
     };
   } catch (e) {
+    console.log(e);
     return {
       statusCode: 400,
       body: JSON.stringify(e),
